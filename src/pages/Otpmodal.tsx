@@ -1,4 +1,3 @@
-// OtpVerificationModal.tsx
 import React, { useState } from "react";
 import { Modal, Box, Typography, TextField, Button } from "@mui/material";
 
@@ -10,7 +9,6 @@ interface OtpVerificationModalProps {
 
 const OtpVerificationModal: React.FC<OtpVerificationModalProps> = ({ open, onClose, onVerify }) => {
   const [otp, setOtp] = useState("");
-  const [emailId, setEmailId] = useState("");
   const handleVerify = () => {
     onVerify(otp);
   };
@@ -30,17 +28,6 @@ const OtpVerificationModal: React.FC<OtpVerificationModalProps> = ({ open, onClo
           borderRadius: 2,
         }}
       >
-        <Typography variant="h6" component="h2" gutterBottom>
-          Enter Email
-        </Typography>
-        <TextField
-          fullWidth
-          label="Email"
-          value={emailId}
-          onChange={(e) => setEmailId(e.target.value)}
-          variant="outlined"
-          margin="normal"
-        />
         <Typography variant="h6" component="h2" gutterBottom>
           Enter OTP
         </Typography>

@@ -1,21 +1,83 @@
-import { LockOutlined } from "@mui/icons-material";
 import {
+  Avatar,
+  Box,
+  Button,
   Container,
   CssBaseline,
-  Box,
-  Avatar,
-  Typography,
-  TextField,
-  Button,
   Grid,
+  TextField,
+  Typography,
 } from "@mui/material";
+import { LockOutlined } from "@mui/icons-material";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import OtpVerificationModal from "./Otpmodal"; 
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [emailId, setEmail] = useState("");
+  const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
+  const navigate = useNavigate();
+ 
+  const handleLogin = async () => {
+    const user = {
+      emailId,
+    };
 
-  const handleLogin = () => {};
+    try {
+      const response = await axios.post("http://localhost:8000/api/v1/users/signin", user);
+    
+      if (response.status === 200) {
+       
+        setIsOtpModalOpen(true);
+        // navigate("/");
+      } else {
+        toast.error("Login failed: " + (response.data.message || "Unknown error"));
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          toast.error("Error: " + (error.response.data.message || "Unknown error from server"));
+        } else if (error.request) {
+          toast.error("Error: No response from server. Please try again later.");
+        } else {
+          toast.error("Error: " + error.message);
+        }
+      }
+    }
+  };
+
+  const handleOtpVerify = async (otp: string) => {
+    const otpPayload = {
+      emailId,
+      otp,
+    };
+    try {
+      const response = await axios.post("http://localhost:8000/api/v1/users/verify-otp", otpPayload);
+      console.log(response)
+      if (response.status === 200) {
+        toast.success("OTP verification successful!");
+        setIsOtpModalOpen(false);
+        toast.success("Login successful!");
+        navigate("/");
+      } else {
+        toast.error("OTP verification failed: " + (response.data.message || "Unknown error"));
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          toast.error("Error: " + (error.response.data.message || "Unknown error from server"));
+        } else if (error.request) {
+          toast.error("Error: No response from server. Please try again later.");
+        } else {
+          toast.error("Error: " + error.message);
+        }
+      }
+    }
+  };
 
   return (
     <>
@@ -33,20 +95,22 @@ const Login = () => {
             <LockOutlined />
           </Avatar>
           <Typography variant="h5">Login</Typography>
-          <Box sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
+          <Box sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="emailId"
+                  label="Email Address"
+                  name="emailId"
+                  value={emailId}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoFocus
+                />
+              </Grid>
 
-
+            </Grid>
             <Button
               fullWidth
               variant="contained"
@@ -55,7 +119,7 @@ const Login = () => {
             >
               Login
             </Button>
-            <Grid container justifyContent={"flex-end"}>
+            <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link to="/register">Don't have an account? Register</Link>
               </Grid>
@@ -63,6 +127,12 @@ const Login = () => {
           </Box>
         </Box>
       </Container>
+      <OtpVerificationModal
+        open={isOtpModalOpen}
+        onClose={() => setIsOtpModalOpen(false)}
+        onVerify={handleOtpVerify}
+      />
+      <ToastContainer />
     </>
   );
 };
