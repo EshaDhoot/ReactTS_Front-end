@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Grid, Typography } from '@mui/material';
+import withAuth from './AuthChecker';
 
 interface Product {
   ID: string;
@@ -20,7 +21,7 @@ const Products: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/api/v1/products');
+      const response = await axios.get('http://localhost:8000/api/v1/products',{withCredentials: true});
       console.log(response.data.data)
       if (response.data.data) {
         setProducts(response.data.data);
@@ -65,4 +66,4 @@ const Products: React.FC = () => {
   );
 };
 
-export default Products;
+export default withAuth(Products);

@@ -50,7 +50,7 @@ const Navbar: React.FC = () => {
               </Typography>
             </Grid>
             <Grid item>
-              <Typography variant="h6"
+              <Typography variant="h6" component={Link} to = "/protected"
                 sx={{
                   color: 'grey', '&:hover': { cursor: 'pointer', color: 'blue' },
                   flexGrow: 1

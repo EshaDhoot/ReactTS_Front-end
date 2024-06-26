@@ -7,7 +7,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Product from './pages/Product';
 import Navbar from './pages/Navbar';
-function App() {
+import Dummy from './pages/Dummy';
+const App: React.FC = () => {
   return (
     <>
     <Navbar/>
@@ -16,6 +17,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/products' element={<Product />} />
+          <Route path='/protected' element={<Dummy />} />
         </Routes>
         <ToastContainer />
       
