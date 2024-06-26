@@ -28,10 +28,10 @@ const Login = () => {
     };
 
     try {
-      const response = await axios.post("http://localhost:8000/api/v1/users/signin", user);
-    
+      const response = await axios.post("http://localhost:8000/api/v1/users/signin", user,{withCredentials: true});
+   
       if (response.status === 200) {
-       
+        console.log(response)
         setIsOtpModalOpen(true);
         // navigate("/");
       } else {
@@ -56,7 +56,7 @@ const Login = () => {
       otp,
     };
     try {
-      const response = await axios.post("http://localhost:8000/api/v1/users/verify-otp", otpPayload);
+      const response = await axios.post("http://localhost:8000/api/v1/users/verify-otp", otpPayload, {withCredentials: true});
       console.log(response)
       if (response.status === 200) {
         toast.success("OTP verification successful!");
