@@ -5,12 +5,12 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { CookiesProvider } from 'react-cookie';
 import Product from './pages/Product';
+import Navbar from './pages/Navbar';
 function App() {
   return (
     <>
-      <CookiesProvider>
+    <Navbar/>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
@@ -18,7 +18,7 @@ function App() {
           <Route path='/products' element={<Product />} />
         </Routes>
         <ToastContainer />
-      </CookiesProvider>
+      
     </>
   );
 }

@@ -60,7 +60,7 @@ const Register = () => {
       otp,
     };
     try {
-      const response = await axios.post("http://localhost:8000/api/v1/users/verify-otp", otpPayload);
+      const response = await axios.post("http://localhost:8000/api/v1/users/verify-otp", otpPayload, {withCredentials: true});
       console.log(response)
       if (response.status === 200) {
         toast.success("OTP verification successful!");
@@ -90,13 +90,13 @@ const Register = () => {
         <CssBaseline />
         <Box
           sx={{
-            mt: 20,
+            mt: 10,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
+          <Avatar sx={{  bgcolor: "primary.light" }}>
             <LockOutlined />
           </Avatar>
           <Typography variant="h5">Register</Typography>

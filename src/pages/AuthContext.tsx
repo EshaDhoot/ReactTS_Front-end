@@ -8,7 +8,7 @@ interface AuthContextType {
 
 const initialAuthContext: AuthContextType = {
   isLoggedIn: false,
-  login: () => {},
+  login: () => { },
 
 };
 
@@ -18,7 +18,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const login = () => {
-    // Perform actual login logic here (e.g., set authentication token, etc.)
     setIsLoggedIn(true);
   };
 
