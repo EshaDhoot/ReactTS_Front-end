@@ -3,11 +3,9 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import { Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
+import withAuth from './AuthChecker';
 
 const Navbar: React.FC = () => {
   return (
@@ -15,11 +13,6 @@ const Navbar: React.FC = () => {
       <AppBar position="static" color="transparent" sx={{ m: 0, p: 2 }}>
         <Toolbar>
           <Grid container alignItems="center" spacing={10}>
-            {/* <Grid item>
-              <IconButton edge="start" color="inherit" aria-label="menu">
-                <MenuIcon />
-              </IconButton>
-            </Grid> */}
             <Grid item>
               <Typography variant="h6" component={Link} to="/"
                 sx={{
@@ -60,9 +53,9 @@ const Navbar: React.FC = () => {
               </Typography>
             </Grid>
             <Grid item xs />
-            <Grid item>
+            {/* <Grid item>
               <Button color="inherit" component={Link} to="/login">SIGN IN</Button>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Toolbar>
       </AppBar>
@@ -70,4 +63,4 @@ const Navbar: React.FC = () => {
   );
 };
 
-export default Navbar;
+export default withAuth(Navbar);

@@ -6,18 +6,20 @@ import Register from './pages/Register';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Product from './pages/Product';
-import Navbar from './pages/Navbar';
 import Dummy from './pages/Dummy';
+import Navbar from './pages/Navbar';
+import ProductDetails from './pages/ProductDetails';
 const App: React.FC = () => {
   return (
     <>
-    <Navbar/>
+
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/products' element={<Product />} />
-          <Route path='/protected' element={<Dummy />} />
+          <Route path='/productdetails/:productid' element={<ProductDetails />} />
+
         </Routes>
         <ToastContainer />
       

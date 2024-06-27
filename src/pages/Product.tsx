@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Grid, Typography, Card, CardContent, CardHeader, CircularProgress, Alert, Button, Box } from '@mui/material';
+import { Grid, Typography, Card, CardContent, CardHeader, CircularProgress, Alert, Button, Box, LinearProgress, Container } from '@mui/material';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
-import withAuth from './AuthChecker';
+import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+
+import Navbar from './Navbar';
 
 interface Product {
-  ID: string;
+  _id: string;
   BuyerName: string;
   SellerName: string;
   UnitPrice: number;
@@ -48,19 +50,6 @@ const StyledCardContent = styled(CardContent)(({ theme }) => ({
   padding: theme.spacing(2),
   textAlign: 'center',
   backgroundColor: '#f0f0f0',
-}));
-
-const IncrementDecrementBox = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  marginTop: theme.spacing(2),
-  
-}));
-
-const IncrementDecrementButton = styled(Button)(({ theme }) => ({
-  margin: theme.spacing(0, 1),
-  backgroundColor: '#61c5e9',
 }));
 
 const Products: React.FC = () => {
@@ -106,31 +95,19 @@ const Products: React.FC = () => {
   }
 
   return (
-    <Grid container spacing={3} sx={{ m: 2, p: 2 }}>
-      {products.map((product) => (
-        <Grid item xs={12} sm={6} md={4} key={product.ID}>
-          <ProductCard product={product} />
-        </Grid>
-      ))}
-    </Grid>
+    <Container>
+      <Grid container spacing={3} justifyContent="center">
+        {products.map((product) => (
+          <Grid item xs={12} sm={6} md={4} key={product._id}>
+            <ProductCard product={product} />
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
   );
 };
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
-  const [units, setUnits] = useState(0);
-
-  const incrementUnits = () => {
-    if (units < product.TotalUnits) {
-      setUnits(units + 1);
-    }
-  };
-
-  const decrementUnits = () => {
-    if (units > 0) {
-      setUnits(units - 1);
-    }
-  };
-
   return (
     <StyledCard>
       <StyledCardHeader
@@ -138,30 +115,26 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
         subheader={`Seller: ${product.SellerName}`}
       />
       <StyledCardContent>
-        <Typography variant="body1">Unit Price: Rs.{product.UnitPrice}</Typography>
-        <Typography variant="body1">Total Units: {product.TotalUnits}</Typography>
-        <Typography variant="body1">Tenure: {product.Tenure} Days</Typography>
-        <Typography variant="body1">Xirr: {product.Xirr}%</Typography>
-        <IncrementDecrementBox>
-          <IncrementDecrementButton variant="contained" color="primary" onClick={decrementUnits} disabled={units === 0}>
-            -
-          </IncrementDecrementButton>
-          <Typography variant="body1" display="inline" mx={2}>
-            {units}
-          </Typography>
-          <IncrementDecrementButton variant="contained" color="primary" onClick={incrementUnits} disabled={units >= product.TotalUnits}>
-            +
-          </IncrementDecrementButton>
-        </IncrementDecrementBox>
+        <Button component={Link} to={`/productdetails/${product._id}`} sx={{ textDecoration: 'none','&:hover': { cursor: 'pointer', color: 'blue', backgroundColor:'white'},backgroundColor: '#c0e5f2' }}>
+          Buy Now
+        </Button>
       </StyledCardContent>
     </StyledCard>
   );
 };
 
 const App: React.FC = () => (
-  <ThemeProvider theme={theme}>
-    <Products />
-  </ThemeProvider>
+  <>
+    <Navbar />
+
+    <ThemeProvider theme={theme}>
+      <Box sx={{ minHeight: '70vh', display: 'flex', justifyContent: 'center', alignItems: 'center',flexDirection: 'row' }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Products />
+        </Box>
+      </Box>
+    </ThemeProvider>
+  </>
 );
 
-export default withAuth(App);
+export default App;
