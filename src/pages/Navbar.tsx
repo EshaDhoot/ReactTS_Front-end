@@ -53,7 +53,8 @@ const Navbar: React.FC = () => {
               <Typography variant="h6" component={Link} to = "/protected"
                 sx={{
                   color: 'grey', '&:hover': { cursor: 'pointer', color: 'blue' },
-                  flexGrow: 1
+                  flexGrow: 1,
+                  textDecoration: 'none'
                 }}>
                 Portfolio
               </Typography>
