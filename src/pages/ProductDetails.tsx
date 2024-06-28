@@ -8,7 +8,8 @@ import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 
 import axios from 'axios';
 import Navbar from './Navbar';
-import { BorderLeftRounded } from '@mui/icons-material';
+import withAuth from './AuthChecker';
+
 
 interface Product {
   _id: string;
@@ -186,4 +187,4 @@ const App: React.FC = () => (
   </>
 );
 
-export default App;
+export default withAuth(App);

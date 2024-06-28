@@ -3,7 +3,7 @@ import { getCookie } from '../utils/Cookies';
 import { Navigate } from 'react-router-dom'; 
 
 interface WithAuthProps {
-  // any additional props go here
+  
 }
 
 const withAuth = <P extends WithAuthProps>(Component: React.ComponentType<P>) => {

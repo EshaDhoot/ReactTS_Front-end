@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Grid, Typography, Card, CardContent, CardHeader, CircularProgress, Alert, Button, Box, LinearProgress, Container } from '@mui/material';
 import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
-
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import withAuth from './AuthChecker';
 import Navbar from './Navbar';
 
 interface Product {
@@ -137,4 +137,4 @@ const App: React.FC = () => (
   </>
 );
 
-export default App;
+export default withAuth(App);
