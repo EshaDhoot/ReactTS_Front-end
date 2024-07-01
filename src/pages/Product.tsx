@@ -116,7 +116,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
       />
       <StyledCardContent>
         <Button component={Link} to={`/productdetails/${product._id}`} sx={{ textDecoration: 'none','&:hover': { cursor: 'pointer', color: 'blue', backgroundColor:'white'},backgroundColor: '#c0e5f2' }}>
-          Buy Now
+          More Details
         </Button>
       </StyledCardContent>
     </StyledCard>

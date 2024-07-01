@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {
   Grid, Typography, Card, CardContent, CardHeader, CircularProgress,
   Alert, Button, Box, LinearProgress, Container
@@ -9,7 +9,7 @@ import { styled, ThemeProvider, createTheme } from '@mui/material/styles';
 import axios from 'axios';
 import Navbar from './Navbar';
 import withAuth from './AuthChecker';
-
+import OrderDetailsPopup from './OrderDetailsModal';
 
 interface Product {
   _id: string;
@@ -20,6 +20,7 @@ interface Product {
   Tenure: number;
   DiscountRate: number;
   Xirr: number;
+  ID: string;
 }
 
 const theme = createTheme({
@@ -71,7 +72,8 @@ const IncrementDecrementButton = styled(Button)(({ theme }) => ({
 
 const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
   const [units, setUnits] = useState(0);
-
+  const [orderPopupOpen, setOrderPopupOpen] = useState(false);
+  const [orderDetails, setOrderDetails] = useState<Product | null>(null);
   const incrementUnits = () => {
     if (units < product.TotalUnits) {
       setUnits(units + 1);
@@ -82,6 +84,33 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
     if (units > 0) {
       setUnits(units - 1);
     }
+  };
+  // console.log(product.ID)
+
+  const handleBuyNow = async () => {
+    try {
+      const requestData = {
+        ProductId: product.ID,
+        NoOfUnits: units,
+      };
+      console.log('Request Data:', requestData);
+      const response = await axios.post(
+        'http://localhost:8000/api/v1/order/details', requestData, { withCredentials: true }
+      );
+
+      if (response.data && response.data.data) {
+        setOrderDetails(response.data.data);
+        setOrderPopupOpen(true);
+      } else {
+        throw new Error('Order details not found');
+      }
+    } catch (error) {
+      console.error('Error fetching order details:', error);
+    }
+  };
+
+  const handleClosePopup = () => {
+    setOrderPopupOpen(false);
   };
 
   const progress = (units / product.TotalUnits) * 100;
@@ -111,6 +140,13 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
             +
           </IncrementDecrementButton>
         </IncrementDecrementBox>
+
+        <Button onClick={handleBuyNow} sx={{ textDecoration: 'none', '&:hover': { cursor: 'pointer', color: 'blue', backgroundColor: 'white' }, backgroundColor: '#c0e5f2', m:3 }}>
+          Buy Now
+        </Button>
+
+        <OrderDetailsPopup open={orderPopupOpen} onClose={handleClosePopup} product={orderDetails} units={units} />
+    
       </StyledCardContent>
     </StyledCard>
   );
