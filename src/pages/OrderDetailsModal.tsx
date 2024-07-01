@@ -1,5 +1,9 @@
 import React from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import withAuth from './AuthChecker';
+
 
 interface Product {
   _id: string;
@@ -10,6 +14,7 @@ interface Product {
   Tenure: number;
   DiscountRate: number;
   Xirr: number;
+  ID: string;
 }
 
 interface OrderDetailsPopupProps {
@@ -20,8 +25,29 @@ interface OrderDetailsPopupProps {
 }
 
 const OrderDetailsPopup: React.FC<OrderDetailsPopupProps> = ({ open, onClose, product, units }) => {
+  const navigate = useNavigate();
   if (!product) return null;
 
+
+const handleConfirmOrder = async () => {
+    try {
+      const requestData = {
+        ProductId: product.ID,
+        NoOfUnits: units,
+      };
+      // console.log(product)
+      console.log('Request Data:', requestData);
+      const response = await axios.post(
+        'http://localhost:8000/api/v1/order', requestData, { withCredentials: true }
+      );
+      console.log(response.data.data.UserId)
+      
+      navigate(`/portfolio/${response.data.data.UserId}`)
+
+    } catch (error) {
+      console.error('Error fetching order details:', error);
+    }
+  };
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Order Details</DialogTitle>
@@ -40,10 +66,10 @@ const OrderDetailsPopup: React.FC<OrderDetailsPopupProps> = ({ open, onClose, pr
         <Button onClick={onClose} color="primary">
           Close
         </Button>
-        <Button>Confirm Order</Button>
+        <Button onClick={handleConfirmOrder} sx={{ textDecoration: 'none', '&:hover': { cursor: 'pointer', color: 'blue', backgroundColor: 'white' }, backgroundColor: '#c0e5f2', m:3 }}>Confirm Order</Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default OrderDetailsPopup;
+export default withAuth(OrderDetailsPopup);

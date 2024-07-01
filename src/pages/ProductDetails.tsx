@@ -99,6 +99,7 @@ const ProductCard: React.FC<{ product: Product }> = ({ product }) => {
       );
 
       if (response.data && response.data.data) {
+        console.log(response.data.data)
         setOrderDetails(response.data.data);
         setOrderPopupOpen(true);
       } else {

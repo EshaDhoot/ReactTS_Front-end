@@ -3,11 +3,12 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import withAuth from './AuthChecker';
 
 const Navbar: React.FC = () => {
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" color="transparent" sx={{ m: 0, p: 2 }}>
@@ -53,9 +54,11 @@ const Navbar: React.FC = () => {
               </Typography>
             </Grid>
             <Grid item xs />
-            {/* <Grid item>
-              <Button color="inherit" component={Link} to="/login">SIGN IN</Button>
-            </Grid> */}
+            <Grid item>
+              <Button variant="contained" color="secondary">
+                Sign Out
+              </Button>
+            </Grid>
           </Grid>
         </Toolbar>
       </AppBar>
